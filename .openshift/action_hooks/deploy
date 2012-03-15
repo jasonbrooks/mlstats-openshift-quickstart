@@ -38,7 +38,8 @@ fi
 export HOME=$OPENSHIFT_REPO_DIR/libs
 
 cat $OPENSHIFT_REPO_DIR/libs/lists_list | python $OPENSHIFT_REPO_DIR/libs/mlstats \
---no-report --db-hostname=$OPENSHIFT_DB_HOST -
+--db-user "$OPENSHIFT_DB_USERNAME" --db-password "$OPENSHIFT_DB_PASSWORD" --no-report \
+--db-hostname=$OPENSHIFT_DB_HOST -
 
 for script in lists rh-nrh;
 do
