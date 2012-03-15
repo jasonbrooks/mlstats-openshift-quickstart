@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export HOME=$OPENSHIFT_REPO_DIR/libs
+
+cat $OPENSHIFT_REPO_DIR/libs/lists_list | python $OPENSHIFT_REPO_DIR/libs/mlstats \
+--no-report --db-hostname=$OPENSHIFT_DB_HOST -
+
+for script in lists rh-nrh;
+do
+  mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h \
+  "$OPENSHIFT_DB_HOST" mlstats < $OPENSHIFT_REPO_DIR/libs/queries/${script} \
+  | sed 's/\t/,/g' > $OPENSHIFT_REPO_DIR/php/${script}.csv
+done;

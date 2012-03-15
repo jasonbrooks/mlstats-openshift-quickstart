@@ -1,0 +1,80 @@
+<html>
+<head>
+<script type="text/javascript"
+  src="dygraph-combined.js"></script>
+</head>
+<body>
+<div id="graphdiv"
+  style="width:1000px; height:500px;"></div>
+
+<p><b>Show Series:</b></p>
+    <p>
+      <input type=checkbox id="0" onClick="change(this)">
+      <label for="0"> announce</label><br/>
+      <input type=checkbox id="1" onClick="change(this)">
+      <label for="1"> arch</label>
+      <input type=checkbox id="2" onClick="change(this)">
+      <label for="2"> board</label><br/>
+      <input type=checkbox id="3" onClick="change(this)">
+      <label for="3"> engine-devel</label>
+      <input type=checkbox id="4" onClick="change(this)">
+      <label for="4"> infra</label><br/>
+      <input type=checkbox id="5" onClick="change(this)">
+      <label for="5"> node-devel</label>
+      <input type=checkbox id="6" checked onClick="change(this)">
+      <label for="6"> users</label><br/>
+      <input type=checkbox id="7" onClick="change(this)">
+      <label for="7"> vdsm-devel</label>
+      <input type=checkbox id="8" onClick="change(this)">
+      <label for="8"> node-patches</label>
+      <input type=checkbox id="9" onClick="change(this)">
+      <label for="9"> vdsm-patches</label><br/>
+      <input type=checkbox id="10" onClick="change(this)">
+      <label for="10"> engine-patches</label>
+    </p>
+
+    
+
+<script type="text/javascript">
+  g = new Dygraph(
+    document.getElementById("graphdiv"),
+    "lists.csv", // path to CSV file
+    {
+      title: 'breakdown of oVirt mailing lists over time',
+      rollPeriod: 7,
+      legend: 'always', 
+      showRoller: true,
+      visibility: [false, false, false, false, false, false, true, false, false, false, false]
+    }          // options
+  );
+setStatus();
+
+      function setStatus() {
+        document.getElementById("visibility").innerHTML =
+          g.visibility().toString();
+      }
+
+      function change(el) {
+        g.setVisibility(parseInt(el.id), el.checked);
+        setStatus();
+      }
+</script>
+<div id="graphdiv2"
+  style="width:1000px; height:500px;"></div>
+<script type="text/javascript">
+  g2 = new Dygraph(
+    document.getElementById("graphdiv2"),
+    "rh-nrh.csv", // path to CSV file
+    {
+      title: 'unique addresses across oVirt lists: RH vs. non RH domains',
+      rollPeriod: 7,
+      legend: 'always',
+      showRoller: true
+    }          // options
+  );
+</script>
+<p>
+
+Data collected with <a href="https://gitorious.org/mining-tools/mlstats">mlstats</a> and displayed with <a href="http://dygraphs.com/">dygraphs</a>.
+</body>
+</html>

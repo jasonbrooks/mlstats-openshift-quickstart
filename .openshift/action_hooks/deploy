@@ -3,3 +3,46 @@
 # build hook has been run but before the application has been started back
 # up again.  This script gets executed directly, so it could be python, php,
 # ruby, etc.
+
+#!/bin/bash
+# This deploy hook gets executed after dependencies are resolved and the
+# build hook has been run but before the application has been started back
+# up again.  This script gets executed directly, so it could be python, php,
+# ruby, etc.
+
+set -e
+
+if [ -z $OPENSHIFT_DB_HOST ]
+then
+    echo 1>&2
+    echo "Could not find mysql database.  Please run:" 1>&2
+    echo "rhc app cartridge add -a $OPENSHIFT_APP_NAME -c mysql-5.1" 1>&2
+    echo "then make a sample commit (add whitespace somewhere) and re-push" 1>&2
+    echo 1>&2
+    exit 5
+fi
+
+# Confirm database exists, if not create it
+if ! /usr/bin/mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h "$OPENSHIFT_DB_HOST" -e "select * from people;" mlstats > /dev/null 2>&1
+then
+    echo
+    echo "Database schema not found, importing 'data_model.sql' schema."
+    echo
+    /usr/bin/mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h "$OPENSHIFT_DB_HOST" mlstats < "$OPENSHIFT_REPO_DIR/.openshift/action_hooks/data_model.sql"
+    echo
+    echo "done."
+else
+    echo "Database found, skipping import."
+fi
+
+export HOME=$OPENSHIFT_REPO_DIR/libs
+
+cat $OPENSHIFT_REPO_DIR/libs/lists_list | python $OPENSHIFT_REPO_DIR/libs/mlstats \
+--no-report --db-hostname=$OPENSHIFT_DB_HOST -
+
+for script in lists rh-nrh;
+do
+  mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h \
+  "$OPENSHIFT_DB_HOST" mlstats < $OPENSHIFT_REPO_DIR/libs/queries/${script} \
+  | sed 's/\t/,/g' > $OPENSHIFT_REPO_DIR/php/${script}.csv
+done;
