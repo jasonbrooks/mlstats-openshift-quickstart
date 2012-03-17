@@ -14,7 +14,7 @@ mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" --column-n
 
 ## prepare by-date count for each list
   
-for list in `cat list_of_listnames`;
+for list in `cat $OPENSHIFT_REPO_DIR/libs/queries/working/list_of_listnames`;
 do
   mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" --column-names=1 \
   -h "$OPENSHIFT_DB_HOST" mlstats -e "SELECT COALESCE(list.mlu,0) '$list' FROM (select LEFT(first_date, 10) fdl from messages group by fdl order by first_date) list_all LEFT JOIN (select LEFT(first_date, 10) fdl, count(mailing_list_url) mlu from messages m where mailing_list_url LIKE '%$list%' group by fdl order by first_date) list on list_all.fdl = list.fdl" \
@@ -23,7 +23,7 @@ done;
 
 ## combine dates and list counts into csv
 
-paste -d , list_of_dates.txt `ls *.list` > $OPENSHIFT_REPO_DIR/php/lists.csv
+paste -d , $OPENSHIFT_REPO_DIR/libs/queries/working/list_of_dates.txt `ls $OPENSHIFT_REPO_DIR/libs/queries/working/*.list` > $OPENSHIFT_REPO_DIR/php/lists.csv
 
 ## clean temp files
 
