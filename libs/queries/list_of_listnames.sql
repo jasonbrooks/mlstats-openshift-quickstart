@@ -1,0 +1,1 @@
+select distinct(substring_index(mailing_list_url, '/', -1)) from messages
