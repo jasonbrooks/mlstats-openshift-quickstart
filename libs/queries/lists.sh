@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ## prepare date list
+## note these seds aren't needed
 
 mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" --column-names=1 \
   -h "$OPENSHIFT_DB_HOST" mlstats < $OPENSHIFT_REPO_DIR/libs/queries/list_of_dates.sql \
@@ -9,7 +10,7 @@ mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" --column-n
 ## prepare list name list
 
 mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" --column-names=0 \
-  -h "$OPENSHIFT_DB_HOST" mlstats < $OPENSHIFT_REPO_DIR/libs/queries/list_of_listnames.sql \
+  -h "$OPENSHIFT_DB_HOST" mlstats < $OPENSHIFT_REPO_DIR/libs/queries/list_listnames.sql \
   | sed 's/\t/,/g' > $OPENSHIFT_REPO_DIR/libs/queries/working/list_of_listnames  
 
 ## prepare by-date count for each list
