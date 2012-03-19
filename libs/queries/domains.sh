@@ -30,7 +30,7 @@ paste -d , $OPENSHIFT_REPO_DIR/libs/queries/working/list_of_dates.txt `ls $OPENS
 
 #rm *.txt *.list
 
-## write top of lists.html
+## write top of domains.html
 echo "<html>
 <head>
 <script type=\"text/javascript\"
@@ -47,9 +47,9 @@ echo "<html>
 
 COUNTER=0
 
-for list in `cat $OPENSHIFT_REPO_DIR/libs/queries/working/top_ten_domains`; do
+for domain in `cat $OPENSHIFT_REPO_DIR/libs/queries/working/top_ten_domains`; do
   echo "    <input type=checkbox id=\"$COUNTER\" checked onClick=\"change(this)\">
-    <label for=\"$COUNTER\"> $list</label><br/>" >> $OPENSHIFT_REPO_DIR/php/domains.html
+    <label for=\"$COUNTER\"> $domain</label><br/>" >> $OPENSHIFT_REPO_DIR/php/domains.html
   let COUNTER=COUNTER+1    
 done;
 
