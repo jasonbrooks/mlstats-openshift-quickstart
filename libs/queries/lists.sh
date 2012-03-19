@@ -18,7 +18,7 @@ mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" --column-n
 for list in `cut -d"," -f1 $OPENSHIFT_REPO_DIR/libs/queries/working/list_of_listnames`;
 do
   mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" --column-names=1 \
-  -h "$OPENSHIFT_DB_HOST" mlstats -e "SELECT COALESCE(list.mlu,0) '$list' FROM (select LEFT(first_date, 10) fdl from messages group by fdl order by first_date) list_all LEFT JOIN (select LEFT(first_date, 10) fdl, count(mailing_list_url) mlu from messages m where mailing_list_url LIKE '%$list%' group by fdl order by first_date) list on list_all.fdl = list.fdl" \
+  -h "$OPENSHIFT_DB_HOST" mlstats -e "SELECT COALESCE(list.mlu,0) '$list' FROM (select LEFT(first_date, 10) fdl from messages where LEFT(first_date, 4) > 1979 group by fdl order by first_date) list_all LEFT JOIN (select LEFT(first_date, 10) fdl, count(mailing_list_url) mlu from messages m where mailing_list_url LIKE '%$list%' group by fdl order by first_date) list on list_all.fdl = list.fdl" \
   | sed 's/\t/,/g' > $OPENSHIFT_REPO_DIR/libs/queries/working/${list}.list
 done;
 
