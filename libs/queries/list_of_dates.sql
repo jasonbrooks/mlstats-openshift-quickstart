@@ -1,1 +1,1 @@
-SELECT list_all.fdl Date FROM (select LEFT(first_date, 10) fdl from messages group by fdl order by first_date) list_all
+SELECT list_all.fdl Date FROM (select LEFT(first_date, 10) fdl from messages where LEFT(first_date, 4) > 1979 group by fdl order by first_date) list_all
