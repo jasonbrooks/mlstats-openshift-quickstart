@@ -24,9 +24,9 @@ sh $OPENSHIFT_REPO_DIR/libs/queries/domains.sh
 
 # create simple index page from all *.html pages in this dir not named index.html (the charts)
 
-echo "<h1>mlstats-o-matic charts list:</h1><ul>" >> tmp
-for i in `find *.html ! -type d ! -name 'index.html' | xargs ls`; do
- echo "<li><a href=\"$i\">$i</a>" >> tmp
+echo "<h1>mlstats-o-matic charts list:</h1><ul>" >> $OPENSHIFT_REPO_DIR/php/tmp
+for i in `find $OPENSHIFT_REPO_DIR/php/*.html ! -type d ! -name 'index.html' | xargs ls`; do
+ echo "<li><a href=\"$i\">$i</a>" >> $OPENSHIFT_REPO_DIR/php/tmp
 done
-echo "</ul>" >> tmp
-mv tmp index.html
+echo "</ul>" >> $OPENSHIFT_REPO_DIR/php/tmp
+mv $OPENSHIFT_REPO_DIR/php/tmp $OPENSHIFT_REPO_DIR/php/index.html
