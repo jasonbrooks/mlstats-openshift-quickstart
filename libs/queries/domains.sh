@@ -47,7 +47,7 @@ echo "<html>
 
 COUNTER=0
 
-for domain in `cat $OPENSHIFT_REPO_DIR/libs/queries/working/top_ten_domains`; do
+for domain in `sort $OPENSHIFT_REPO_DIR/libs/queries/working/top_ten_domains`; do
   echo "    <input type=checkbox id=\"$COUNTER\" checked onClick=\"change(this)\">
     <label for=\"$COUNTER\"> $domain</label><br/>" >> $OPENSHIFT_REPO_DIR/php/domains.html
   let COUNTER=COUNTER+1    
