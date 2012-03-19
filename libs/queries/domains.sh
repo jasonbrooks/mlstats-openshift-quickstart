@@ -7,15 +7,15 @@ mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" --column-n
   -h "$OPENSHIFT_DB_HOST" mlstats < $OPENSHIFT_REPO_DIR/libs/queries/list_of_dates.sql \
   | sed 's/\t/,/g' > $OPENSHIFT_REPO_DIR/libs/queries/working/list_of_dates.txt
 
-## prepare top ten domains list
+## prepare top five domains list
 
 mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" --column-names=0 \
-  -h "$OPENSHIFT_DB_HOST" mlstats < $OPENSHIFT_REPO_DIR/libs/queries/top_ten_domains.sql \
-  | sed 's/\t/,/g' > $OPENSHIFT_REPO_DIR/libs/queries/working/top_ten_domains  
+  -h "$OPENSHIFT_DB_HOST" mlstats < $OPENSHIFT_REPO_DIR/libs/queries/top_five_domains.sql \
+  | sed 's/\t/,/g' > $OPENSHIFT_REPO_DIR/libs/queries/working/top_five_domains  
 
 ## prepare by-date count for each domain
   
-for domain in `cut -d"," -f1 $OPENSHIFT_REPO_DIR/libs/queries/working/top_ten_domains`;
+for domain in `cut -d"," -f1 $OPENSHIFT_REPO_DIR/libs/queries/working/top_five_domains`;
 do
   mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" --column-names=1 \
   -h "$OPENSHIFT_DB_HOST" mlstats -e "SELECT COALESCE(tdl.da,0) '$domain' FROM (select LEFT(first_date, 10) fdl from messages where LEFT(first_date, 4) > 1979 group by fdl order by first_date) list_all LEFT JOIN (select LEFT(first_date, 10) fdl, count(distinct(email_address)) da, SUBSTRING_INDEX(email_address, '@', -1) domain from messages m join messages_people p on m.message_ID = p.message_id where email_address LIKE '%$domain%' group by fdl order by first_date) tdl ON tdl.fdl = list_all.fdl" \
@@ -47,7 +47,7 @@ echo "<html>
 
 COUNTER=0
 
-for domain in `sort $OPENSHIFT_REPO_DIR/libs/queries/working/top_ten_domains`; do
+for domain in `sort $OPENSHIFT_REPO_DIR/libs/queries/working/top_five_domains`; do
   echo "    <input type=checkbox id=\"$COUNTER\" checked onClick=\"change(this)\">
     <label for=\"$COUNTER\"> $domain</label><br/>" >> $OPENSHIFT_REPO_DIR/php/domains.html
   let COUNTER=COUNTER+1    
@@ -69,7 +69,7 @@ echo "
     document.getElementById(\"graphdiv\"),
     \"domains.csv\", // path to CSV file
     {
-      title: 'Mailing List Participants Over Time, Top Ten Domains',
+      title: 'Mailing List Participants Over Time, Top Five Domains',
       rollPeriod: 7,
       legend: 'onmouseover', 
       showRoller: true,
