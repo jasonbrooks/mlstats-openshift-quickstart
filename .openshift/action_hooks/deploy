@@ -13,5 +13,8 @@ cat $OPENSHIFT_REPO_DIR/libs/lists_list | python $OPENSHIFT_REPO_DIR/libs/mlstat
 # queries here
 
 sh $OPENSHIFT_REPO_DIR/libs/queries/lists.sh
+sh $OPENSHIFT_REPO_DIR/libs/queries/domains.sh
+
+# just for now, so there's something to put on the index page
 
 cp $OPENSHIFT_REPO_DIR/php/lists.html $OPENSHIFT_REPO_DIR/php/index.html
