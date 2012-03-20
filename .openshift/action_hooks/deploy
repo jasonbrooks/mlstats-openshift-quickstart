@@ -4,8 +4,26 @@
 # up again.  This script gets executed directly, so it could be python, php,
 # ruby, etc.
 
+# mlstats wants to create the db itself, so on first run, we need to drop the
+# mlstats schema
+
+if ! /usr/bin/mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h "$OPENSHIFT_DB_HOST" -e "select * from mailing_lists;" mlstats > /dev/null 2>&1
+then
+    echo
+    echo "This appears to be a first run. Dropping schema so mlstats can create it on its own."
+    echo
+    /usr/bin/mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h "$OPENSHIFT_DB_HOST" mlstats -e " < "drop schema `mlstats`;"
+    echo
+    echo "done."
+else
+    echo "We appear to be cool, carrying on."
+fi
+
+
+
+
 # This home setting gives mlstats a place to put its .mlstats dir, where
-# it put dl'ed files. There's probably a better place for these. -- trying data dir
+# it put dl'ed files.
 
 export HOME=$OPENSHIFT_DATA_DIR
 
