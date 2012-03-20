@@ -12,7 +12,7 @@ then
     echo
     echo "This appears to be a first run. Dropping schema so mlstats can create it on its own."
     echo
-    /usr/bin/mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h "$OPENSHIFT_DB_HOST" mlstats -e " < "drop schema `mlstats`;"
+    /usr/bin/mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h "$OPENSHIFT_DB_HOST" mlstats -e < "drop schema `mlstats`;"
     echo
     echo "done."
 else
