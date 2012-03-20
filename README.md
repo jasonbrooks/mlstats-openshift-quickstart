@@ -1,4 +1,4 @@
-Venus on OpenShift
+MLstats on OpenShift
 =========================
 
 Mailing List Stats is a tool to analyze mailing list archives. It can retrieve the archives from a remote web page (usually, the archives web page), or read them from a local directory. It generates a brief report, and write everything to a MySQL database (called mlstats unless other name is indicated).
