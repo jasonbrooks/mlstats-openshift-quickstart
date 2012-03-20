@@ -5,12 +5,12 @@
 # ruby, etc.
 
 # This home setting gives mlstats a place to put its .mlstats dir, where
-# it put dl'ed files. There's probably a better place for these.
+# it put dl'ed files. There's probably a better place for these. -- trying data dir
 
-export HOME=$OPENSHIFT_REPO_DIR/libs
+export HOME=$OPENSHIFT_DATA_DIR
 
 cat $OPENSHIFT_REPO_DIR/libs/lists_list | python $OPENSHIFT_REPO_DIR/libs/mlstats \
---db-admin-user "$OPENSHIFT_DB_USERNAME" --db-admin-password "$OPENSHIFT_DB_PASSWORD" --report-file $OPENSHIFT_REPO_DIR/php/report.html \
+--db-admin-user "$OPENSHIFT_DB_USERNAME" --db-admin-password "$OPENSHIFT_DB_PASSWORD" --no-report \
 --db-hostname=$OPENSHIFT_DB_HOST --db-user "$OPENSHIFT_DB_USERNAME" --db-password "$OPENSHIFT_DB_PASSWORD" -
 
 # Queries go here, comment, uncomment or add at will. These query scripts

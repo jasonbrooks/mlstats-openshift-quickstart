@@ -3,9 +3,9 @@
 
 
 # This home setting gives mlstats a place to put its .mlstats dir, where
-# it put dl'ed files. There's probably a better place for these.
+# it put dl'ed files. There's probably a better place for these -- trying data dir.
 
-export HOME=$OPENSHIFT_REPO_DIR/libs
+export HOME=$OPENSHIFT_DATA_DIR
 
 # this loads/updates the db with the list from the lists_list
 
