@@ -7,7 +7,7 @@
 # mlstats wants to create the db itself, so on first run, we need to drop the
 # mlstats schema
 
-if ! /usr/bin/mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h "$OPENSHIFT_DB_HOST" -e "select * from mailing_lists;" mlstats > /dev/null 2>&1
+if ! /usr/bin/mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h "$OPENSHIFT_DB_HOST" -e "describe mailing_lists;" mlstats > /dev/null 2>&1
 then
     echo
     echo "This appears to be a first run. Dropping schema so mlstats can create it on its own."
@@ -34,7 +34,7 @@ cat $OPENSHIFT_REPO_DIR/libs/lists_list | python $OPENSHIFT_REPO_DIR/libs/mlstat
 # Queries go here, comment, uncomment or add at will. These query scripts
 # need only generate a csv file w/ data and generate an html file to show
 # the data. The scripts lists.sh and domains.sh should work automatically
-# with any lists pasted into /libs/lists_list. 
+# with any lists pasted into libs/lists_list. 
 
 
 sh $OPENSHIFT_REPO_DIR/libs/queries/lists.sh
