@@ -1,6 +1,0 @@
-select rhd.fdl Date, COALESCE(rhd.RH,0) 'RH', COALESCE(nrhd.RH,0) 'non-RH' 
-FROM 
-(select LEFT(first_date, 10) fdl, count(distinct(email_address)) RH, SUBSTRING_INDEX(email_address, '@', -1) domain from messages m join messages_people p on m.message_ID = p.message_id where email_address LIKE '%redhat%' group by fdl order by first_date) rhd 
-LEFT JOIN 
-(select LEFT(first_date, 10) fdl, count(distinct(email_address)) RH, SUBSTRING_INDEX(email_address, '@', -1) domain from messages m join messages_people p on m.message_ID = p.message_id where email_address NOT LIKE '%redhat%' group by fdl order by first_date) nrhd 
-ON rhd.fdl = nrhd.fdl;
