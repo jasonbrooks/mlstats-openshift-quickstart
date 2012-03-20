@@ -15,6 +15,10 @@ Create an account at http://openshift.redhat.com/
 Create a PHP application
 
 	rhc app create -a mlstats -t php-5.3
+    
+Add mysql support to your application
+    
+	rhc app cartridge add -a mlstats -c mysql-5.1
 
 Add cron support to your application
     
