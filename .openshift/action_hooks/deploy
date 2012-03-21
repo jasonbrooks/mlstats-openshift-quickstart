@@ -13,6 +13,7 @@ then
     echo "This appears to be a first run. Initializing mlstats db."
     echo
     /usr/bin/mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h "$OPENSHIFT_DB_HOST" < "$OPENSHIFT_REPO_DIR/.openshift/action_hooks/db.sql"
+    /usr/bin/mysql -u "$OPENSHIFT_DB_USERNAME" --password="$OPENSHIFT_DB_PASSWORD" -h "$OPENSHIFT_DB_HOST" < "$OPENSHIFT_REPO_DIR/.openshift/action_hooks/make_intervals.sql"
     echo
     echo "done."
 else
